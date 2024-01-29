@@ -2,7 +2,7 @@ $( () => {
 
         const POKEMON_API = "https://pokeapi.co/api/v2/pokemon/";
 
-        const getPokemonData = async (pokemonName) => {
+        const getPokemon = async (pokemonName) => {
             try {
                 let response = await fetch(POKEMON_API + pokemonName);
                 let pokemon = await response.json();
@@ -16,32 +16,26 @@ $( () => {
 
         $('#searchButton').on('click', () => {
             let pokemonName = $('#pokemonInput').val().toLowerCase();
-
-            if (pokemonName !== '') {
-                getPokemonData(pokemonName);
-            } else {
-                alert('Please enter a Pokemon name');
-            }
+                getPokemon(pokemonName);
         });
 
         $('#pokemonInput').on("keypress", (event) => {
             let searchEnter = $('#pokemonInput').val().toLowerCase();
             if (event.key === "Enter") {
-                getPokemonData(searchEnter);
-            }
+                getPokemon(searchEnter);
+            } 
         });
 
         const displayPokemonData = (data) => {
             let container = $('<div>');
-            let nameElement = $('<h2>').text('Name: ' + data.name);
-            let imageElement = $('<img>').attr('src', data.sprites.front_default).attr('alt', data.name);
-            let heightElement = $('<p>').text('Height: ' + data.height);
-            let weightElement = $('<p>').text('Weight: ' + data.weight);
-            let experienceElement = $('<p>').text('XP: ' + data.base_experience);
-            let typeElement = $('<p>').text('Type: ' + data.types[0].type.name);
-        
-            container.append(nameElement, imageElement, heightElement, weightElement, experienceElement, typeElement);
-        
+            $('<h2>').text('Name: ' + data.name).appendTo(container);
+            $('<img>').attr('src', data.sprites.front_default).attr('alt', data.name).appendTo(container);
+            $('<p>').text('Height: ' + data.height).appendTo(container);
+            $('<p>').text('Weight: ' + data.weight).appendTo(container);
+            $('<p>').text('XP: ' + data.base_experience).appendTo(container);
+            $('<p>').text('Type: ' + data.types[0].type.name).appendTo(container);
+    
             $('#pokemonData').empty().append(container);
-        }
+        };
+
 })
